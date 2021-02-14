@@ -14,3 +14,8 @@
 
 6. Now you are ready to use the extension. Open a lecture recording, and click the extension icon in the browser upper right menu bar
 
+
+ ![alt text](https://github.com/ZijinNie/video-downloader/blob/main/steps.png)
+
+ ![alt text](https://github.com/ZijinNie/video-downloader/blob/main/open.png)
+
