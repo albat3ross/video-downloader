@@ -6,6 +6,7 @@ downloadBtn.onclick = (element) => {
 
 function onClick(){
   chrome.storage.local.get(['endTime', 'requestHeaders', 'url'], async (res) => {
+    try{
     let url = res.url;
     let headerArr = res.requestHeaders;
     let endTime = res.endTime;
@@ -14,6 +15,18 @@ function onClick(){
     headerArr.forEach(element => {
       header[element.name] = element.value;
     });
+    
+    //send the first quest to get file size
+    const firstResponse = await fetch(url, {
+      method: 'GET',
+      headers: new Headers(header)
+    });
+
+    for (let e of  firstResponse.headers.entries()){
+      if(e[0] === 'content-range'){
+        endTime = e[1].match(/\d+/g)[2] -1;
+      }
+    }
 
     function replaceStartTime(match, p1,p2, offset, string){
       return "bytes="+"0-"+endTime;
@@ -41,7 +54,7 @@ function onClick(){
       runningTotal += value.length;
       const percentComplete = Math.round((runningTotal / resourceSize) * 100);
 
-      progressEle.innerHTML = 'Progress:' + percentComplete + '%';
+      progressEle.innerHTML = 'Progress:' + percentComplete + '% </br> (Do NOT close this plugin window!)';
     }
     
     var blob = new Blob(chunks)
@@ -62,7 +75,11 @@ function onClick(){
     document.body.appendChild(a); 
     a.click();    
     a.remove();  
-    
+    }catch(error){
+      console.log(error)
+      progressEle.innerHTML = 'You have to play a lecture video before click "Download". If still not work, try refresh the page';
+    }
+
   });
 }
 
