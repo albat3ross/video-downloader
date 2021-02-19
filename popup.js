@@ -47,7 +47,7 @@ function onClick(){
       const {value, done} = await reader.read();
       
       if (done) {
-        progressEle.innerHTML = 'Download completed'
+        progressEle.innerHTML = 'Download completed. NOTICE: The downloaded video is .ts format. Mainstream media players do not support this format. Use .TS video player like "VLC Media Player" to play';
         break;
       }
       chunks.push(value);
@@ -76,7 +76,6 @@ function onClick(){
     a.click();    
     a.remove();  
     }catch(error){
-      console.log(error)
       progressEle.innerHTML = 'You have to play a lecture video before click "Download". If still not work, try refresh the page';
     }
 

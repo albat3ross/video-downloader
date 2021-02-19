@@ -13,10 +13,8 @@ chrome.runtime.onInstalled.addListener(function() {
 var endTime = 0;
 chrome.webRequest.onSendHeaders.addListener(
     function(details) {
-        console.log(details)
         var urlKeyword = 'https://lrscdn.mcgill.ca/api/tsmedia';
         if(details.method === 'GET' && details.url.indexOf(urlKeyword) >= 0){
-            console.log(details.requestHeaders);
             curEndTime = details.requestHeaders.filter(e => e.name === 'Range'|| e.name === 'range')[0]['value'].match(/\d+/g)[1];
             endTime = Math.max(endTime, curEndTime);
             chrome.storage.local.set({requestHeaders: details.requestHeaders}, function(){});
@@ -25,7 +23,7 @@ chrome.webRequest.onSendHeaders.addListener(
         }
     },
     {
-        urls: ["<all_urls>"],
+        urls: ["*://*.mcgill.ca/*"],
         types: ['xmlhttprequest']
     },
     ['requestHeaders']
